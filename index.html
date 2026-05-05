@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#ffaec9">
+  <title>우리 가족 영단어</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 배경 반짝임 -->
+  <div class="bg-sparkle"></div>
+  <!-- Kirby 배경 레이어 -->
+  <div id="kirby-layer"></div>
+  <!-- 색종이 효과 컨테이너 -->
+  <div id="confetti-container"></div>
+
+  <div id="app">
+
+    <!-- 0. 아이 선택 -->
+    <section id="screen-child" class="screen active">
+      <h1>👋 누가 공부할까요?</h1>
+      <div id="children-list" class="profile-buttons"></div>
+      <button class="add-child-btn" id="add-child-btn">＋ 아이 추가</button>
+      <button class="manage-child-btn" id="manage-child-btn">아이 관리</button>
+    </section>
+
+    <!-- 1. 학년 선택 -->
+    <section id="screen-profile" class="screen">
+      <header class="topbar">
+        <button class="back-btn" data-go="child">←</button>
+        <div class="title" id="grade-title"></div>
+      </header>
+      <h1 style="text-align:center;margin-bottom:18px;">어떤 학년을 공부할까요?</h1>
+      <div class="profile-buttons grade-grid">
+        <button class="profile-btn" data-profile="g1">
+          <div class="emoji-big">🌱</div>
+          <div>Grade 1</div>
+          <div class="sub-grade">G1 → G2 미리보기</div>
+        </button>
+        <button class="profile-btn" data-profile="g2">
+          <div class="emoji-big">🌿</div>
+          <div>Grade 2</div>
+          <div class="sub-grade">G2 → G3 미리보기</div>
+        </button>
+        <button class="profile-btn" data-profile="g3">
+          <div class="emoji-big">🌳</div>
+          <div>Grade 3</div>
+          <div class="sub-grade">G3 → G4 미리보기</div>
+        </button>
+        <button class="profile-btn" data-profile="g4">
+          <div class="emoji-big">🌲</div>
+          <div>Grade 4</div>
+          <div class="sub-grade">G4 → G5 미리보기</div>
+        </button>
+        <button class="profile-btn" data-profile="g5">
+          <div class="emoji-big">🎓</div>
+          <div>Grade 5</div>
+          <div class="sub-grade">G5 집중</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. 홈 -->
+    <section id="screen-home" class="screen">
+      <header class="topbar">
+        <button class="back-btn" data-go="profile">←</button>
+        <div class="title" id="home-title">학습</div>
+      </header>
+      <div class="menu">
+        <button class="menu-btn" id="btn-learn">
+          <div class="emoji-big">📚</div>
+          <div>오늘의 단어 배우기</div>
+          <div class="sub">20단어 (10 복습 + 10 예습)</div>
+        </button>
+        <button class="menu-btn" id="btn-test">
+          <div class="emoji-big">✏️</div>
+          <div>오늘 단어 테스트</div>
+          <div class="sub">4가지 형식의 문제</div>
+        </button>
+        <button class="menu-btn" id="btn-stats">
+          <div class="emoji-big">📊</div>
+          <div>학습 기록 보기</div>
+        </button>
+        <button class="menu-btn" id="btn-import">
+          <div class="emoji-big">📥</div>
+          <div>단어 추가하기</div>
+          <div class="sub">학습 풀을 직접 늘리기 (최대 5,000+)</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. 학습 -->
+    <section id="screen-learn" class="screen">
+      <header class="topbar">
+        <button class="back-btn" data-go="home">←</button>
+        <div class="progress" id="learn-progress">1/20</div>
+      </header>
+      <div class="progress-bar"><div class="progress-fill" id="learn-bar"></div></div>
+      <div class="word-card" id="word-card">
+        <div class="word-emoji" id="word-emoji">🐱</div>
+        <div class="word-text" id="word-text">cat</div>
+        <button class="speak-btn" id="speak-word" aria-label="단어 발음 듣기">🔊</button>
+        <div class="word-meaning" id="word-meaning">고양이</div>
+        <div class="word-meaning-en" id="word-meaning-en">a small furry pet</div>
+        <div class="word-example-row">
+          <div class="word-example" id="word-example-en">The cat is small.</div>
+          <button class="speak-btn-tiny" id="speak-example" aria-label="예문 듣기">🔊</button>
+        </div>
+        <div class="word-example-ko" id="word-example-ko">고양이가 작아요.</div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-prev" id="learn-prev">◀ 이전</button>
+        <button class="btn-next" id="learn-next">다음 ▶</button>
+      </div>
+    </section>
+
+    <!-- 4. 테스트 -->
+    <section id="screen-test" class="screen">
+      <header class="topbar">
+        <button class="back-btn" data-go="home">←</button>
+        <div class="progress" id="test-progress">1/20</div>
+        <div class="kirby-counter" id="kirby-counter">
+          <span class="kirby-counter-icon"></span>
+          <span class="kirby-counter-num">0/30</span>
+        </div>
+      </header>
+      <div class="progress-bar"><div class="progress-fill" id="test-bar"></div></div>
+      <div id="test-content"></div>
+    </section>
+
+    <!-- 5. 결과 -->
+    <section id="screen-result" class="screen">
+      <h1 id="result-title">🎉 끝났어요!</h1>
+      <div class="score" id="result-score">0 / 20</div>
+      <div class="wrong-list" id="result-wrong"></div>
+      <button class="review-btn" id="review-wrong" style="display:none;">🔁 틀린 단어 다시 공부하기</button>
+      <button class="big-btn" data-go="home">홈으로</button>
+    </section>
+
+    <!-- 6. 학습 기록 -->
+    <section id="screen-stats" class="screen">
+      <header class="topbar">
+        <button class="back-btn" data-go="home">←</button>
+        <div class="title">학습 기록</div>
+      </header>
+      <div id="stats-content"></div>
+    </section>
+
+    <!-- 7. 단어 추가 -->
+    <section id="screen-import" class="screen">
+      <header class="topbar">
+        <button class="back-btn" data-go="home">←</button>
+        <div class="title">단어 추가</div>
+      </header>
+      <div class="import-card">
+        <p class="import-help">아래 형식대로 한 줄에 하나씩 붙여넣으세요. 각 항목은 <strong>|</strong>(파이프)로 구분합니다.</p>
+        <div class="import-format-box">word|한글뜻|easy English|English example|한글 예문|이모지</div>
+
+        <div class="import-row">
+          <label for="import-grade">학년:</label>
+          <select id="import-grade">
+            <option value="G1">G1</option>
+            <option value="G2">G2</option>
+            <option value="G3">G3</option>
+            <option value="G4">G4</option>
+            <option value="G5">G5</option>
+          </select>
+        </div>
+
+        <textarea id="import-text" placeholder="ancient|고대의|very old, from long ago|The ancient temple is huge.|그 고대 사원은 거대해요.|🏛️
+brave|용감한|not afraid of danger|She is a brave girl.|그녀는 용감한 소녀예요.|🦁"></textarea>
+
+        <button class="big-btn" id="import-go">📥 가져오기</button>
+
+        <div id="import-result"></div>
+        <div id="import-stats"></div>
+
+        <div class="import-tip">
+          <strong>💡 ChatGPT/Claude로 한 번에 100단어 만들기</strong>
+          <p>아래 프롬프트를 복사한 뒤 <a href="https://chat.openai.com" target="_blank">ChatGPT</a> 또는 <a href="https://claude.ai" target="_blank">Claude</a>에 붙여넣으세요. 결과 100줄을 그대로 위 입력창에 붙여넣고 가져오기를 누르면 끝!</p>
+          <button id="copy-prompt" class="copy-btn">📋 프롬프트 복사하기</button>
+          <pre id="import-prompt">Generate 100 vocabulary words appropriate for Grade 3 international school students (8-9 years old). Format each word on its own line, separated by | (pipe character):
+
+word|Korean meaning|simple English explanation|English example sentence|Korean translation|emoji
+
+Example:
+ancient|고대의|very old, from long ago|The ancient temple is huge.|그 고대 사원은 거대해요.|🏛️
+
+Rules:
+- Use Tier 2 academic vocabulary (not basic words like "cat", "run")
+- 100 unique words, no duplicates
+- Cover topics: science, social studies, language arts, math
+- Korean translations should be natural Korean
+- Examples should fit the grade level
+- Output only the 100 lines, no extra text or numbering</pre>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <script src="words.js"></script>
+  <script src="words-batch1-g1.js"></script>
+  <script src="words-batch1-g2.js"></script>
+  <script src="words-batch1-g3.js"></script>
+  <script src="words-batch1-g4.js"></script>
+  <script src="words-batch2-g1.js"></script>
+  <script src="words-batch2-g2.js"></script>
+  <script src="words-batch2-g3.js"></script>
+  <script src="words-batch2-g4.js"></script>
+  <script src="words-batch3-g1.js"></script>
+  <script src="words-batch3-g2.js"></script>
+  <script src="words-batch3-g3.js"></script>
+  <script src="words-batch3-g4.js"></script>
+  <script src="words-g5.js"></script>
+  <script src="words-batch1-g5.js"></script>
+  <script src="words-batch2-g5.js"></script>
+  <script src="words-batch4-g1.js"></script>
+  <script src="words-batch4-g2.js"></script>
+  <script src="words-batch4-g3.js"></script>
+  <script src="words-batch4-g4.js"></script>
+  <script src="words-batch3-g5.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
