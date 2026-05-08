@@ -149,8 +149,20 @@ export default function App() {
     if (typeof window === 'undefined') return;
     let saved;
     try { saved = JSON.parse(localStorage.getItem('children') || 'null'); } catch {}
-    if (Array.isArray(saved) && saved.length > 0) setChildren(saved);
-    else { setChildren(DEFAULT_CHILDREN); localStorage.setItem('children', JSON.stringify(DEFAULT_CHILDREN)); }
+    if (Array.isArray(saved) && saved.length > 0) {
+      // Migration: 기존 default 이름을 새 이름으로 자동 변경
+      let migrated = false;
+      const updated = saved.map(c => {
+        if (c.id === 'child_son' && c.name === '아들') { migrated = true; return { ...c, name: '지원' }; }
+        if (c.id === 'child_daughter' && c.name === '딸') { migrated = true; return { ...c, name: '서온' }; }
+        return c;
+      });
+      if (migrated) localStorage.setItem('children', JSON.stringify(updated));
+      setChildren(updated);
+    } else {
+      setChildren(DEFAULT_CHILDREN);
+      localStorage.setItem('children', JSON.stringify(DEFAULT_CHILDREN));
+    }
   }, []);
 
   // 커비 카운터 갱신 (아이 선택 시)
