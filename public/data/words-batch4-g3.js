@@ -33,14 +33,12 @@
     { word: "horticulture", meaning: "원예", meaningEn: "growing plants", example: "Study horticulture.", exampleKo: "원예학을 공부해요.", emoji: "🌷" },
     { word: "hospitable", meaning: "환대하는", meaningEn: "welcoming guests", example: "A hospitable host.", exampleKo: "환대하는 주인.", emoji: "🤗" },
     { word: "hue", meaning: "색조", meaningEn: "a shade of color", example: "A blue hue.", exampleKo: "푸른 색조.", emoji: "🎨" },
-    { word: "huddle", meaning: "옹기종기 모이다", meaningEn: "to gather close", example: "Players huddle.", exampleKo: "선수들이 모여요.", emoji: "🤗" },
     { word: "humanitarian", meaning: "인도주의의", meaningEn: "helping people", example: "Humanitarian aid.", exampleKo: "인도적 지원.", emoji: "❤️" },
     { word: "humility", meaning: "겸손", meaningEn: "being not proud", example: "Show humility.", exampleKo: "겸손을 보이세요.", emoji: "🙇" },
     { word: "hybrid", meaning: "잡종, 혼합의", meaningEn: "a mix of two things", example: "A hybrid car.", exampleKo: "하이브리드 자동차.", emoji: "🚗" },
     { word: "idealism", meaning: "이상주의", meaningEn: "believing in best", example: "Youthful idealism.", exampleKo: "젊은이의 이상주의.", emoji: "🌟" },
     { word: "identical", meaning: "동일한", meaningEn: "exactly the same", example: "Identical twins.", exampleKo: "일란성 쌍둥이.", emoji: "👯" },
     { word: "identification", meaning: "신원확인", meaningEn: "proof of who you are", example: "Show identification.", exampleKo: "신분증을 보여주세요.", emoji: "🪪" },
-    { word: "ideology", meaning: "이념, 사상", meaningEn: "a set of beliefs", example: "Political ideology.", exampleKo: "정치 이념.", emoji: "💭" },
     { word: "idiom", meaning: "관용구", meaningEn: "a phrase with hidden meaning", example: "Use idioms in English.", exampleKo: "영어에 관용구를 써요.", emoji: "💬" },
     { word: "illuminate", meaning: "비추다, 밝히다", meaningEn: "to light up", example: "Lamps illuminate the room.", exampleKo: "램프가 방을 비춰요.", emoji: "💡" },
     { word: "illusion", meaning: "환상, 착각", meaningEn: "something not real", example: "An optical illusion.", exampleKo: "착시.", emoji: "🎭" },
@@ -49,7 +47,6 @@
     { word: "immune", meaning: "면역의", meaningEn: "protected from", example: "Immune to cold.", exampleKo: "감기에 면역된.", emoji: "🛡️" },
     { word: "impair", meaning: "손상시키다", meaningEn: "to weaken or damage", example: "Loud noise impairs hearing.", exampleKo: "큰 소음이 청력을 손상시켜요.", emoji: "🔊" },
     { word: "impart", meaning: "전하다, 알려주다", meaningEn: "to give knowledge", example: "Impart wisdom.", exampleKo: "지혜를 전해요.", emoji: "📖" },
-    { word: "impede", meaning: "방해하다", meaningEn: "to slow down", example: "Snow impedes traffic.", exampleKo: "눈이 교통을 방해해요.", emoji: "🚧" },
     { word: "imperative", meaning: "필수의, 명령적인", meaningEn: "absolutely necessary", example: "Safety is imperative.", exampleKo: "안전은 필수예요.", emoji: "❗" },
     { word: "implement", meaning: "시행하다, 도구", meaningEn: "to put into action", example: "Implement the plan.", exampleKo: "계획을 시행하세요.", emoji: "🔧" },
     { word: "implicate", meaning: "연관시키다", meaningEn: "to suggest involvement", example: "The note implicates him.", exampleKo: "그 메모가 그를 연관시켜요.", emoji: "📝" },
@@ -101,9 +98,7 @@
     { word: "interact", meaning: "상호작용하다", meaningEn: "to act with others", example: "Interact with classmates.", exampleKo: "반친구들과 상호작용해요.", emoji: "🤝" },
     { word: "intercept", meaning: "가로채다", meaningEn: "to catch midway", example: "Intercept the ball.", exampleKo: "공을 가로채세요.", emoji: "🏈" },
     { word: "interpretation", meaning: "해석", meaningEn: "explaining meaning", example: "Different interpretations.", exampleKo: "다른 해석들.", emoji: "📖" },
-    { word: "intervene", meaning: "개입하다", meaningEn: "to step in", example: "Intervene in the fight.", exampleKo: "싸움에 개입하세요.", emoji: "✋" },
     { word: "intimidate", meaning: "위협하다", meaningEn: "to scare into doing", example: "Don't intimidate others.", exampleKo: "남을 위협하지 마세요.", emoji: "😠" },
-    { word: "intricate", meaning: "복잡한, 정교한", meaningEn: "having many details", example: "Intricate patterns.", exampleKo: "정교한 패턴.", emoji: "🕸️" },
     { word: "investigate", meaning: "조사하다", meaningEn: "to study carefully", example: "Investigate the case.", exampleKo: "사건을 조사해요.", emoji: "🔍" }
   ];
   const seen = new Set(VOCABULARY.G3.map(w => w.word.toLowerCase()));

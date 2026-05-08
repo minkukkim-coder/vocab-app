@@ -2,7 +2,6 @@
 (function () {
   if (typeof VOCABULARY === "undefined") return;
   const ADD = [
-    { word: "academic", meaning: "학문의", meaningEn: "related to school study", example: "Academic skills are important.", exampleKo: "학문 기술은 중요해요.", emoji: "🎓" },
     { word: "accelerate", meaning: "가속하다", meaningEn: "to speed up", example: "The car accelerated quickly.", exampleKo: "차가 빠르게 가속했어요.", emoji: "🚀" },
     { word: "accent", meaning: "말투, 강세", meaningEn: "how you sound when speaking", example: "She has a British accent.", exampleKo: "그녀는 영국 말투를 가져요.", emoji: "🗣️" },
     { word: "accommodate", meaning: "수용하다", meaningEn: "to fit or hold", example: "The hotel accommodates 100 guests.", exampleKo: "호텔은 100명을 수용해요.", emoji: "🏨" },
@@ -30,12 +29,10 @@
     { word: "anticipate", meaning: "예상하다", meaningEn: "to expect", example: "I anticipate a great trip.", exampleKo: "멋진 여행을 예상해요.", emoji: "🔮" },
     { word: "antique", meaning: "골동품", meaningEn: "a very old object", example: "This is an antique vase.", exampleKo: "이건 골동품 꽃병이에요.", emoji: "🏺" },
     { word: "anxious", meaning: "걱정하는", meaningEn: "worried", example: "I'm anxious about the test.", exampleKo: "시험이 걱정돼요.", emoji: "😰" },
-    { word: "archive", meaning: "기록보관소", meaningEn: "a place that stores old papers", example: "The library has an archive.", exampleKo: "도서관에는 기록보관소가 있어요.", emoji: "🗄️" },
     { word: "arena", meaning: "경기장", meaningEn: "a sports place", example: "The arena was full.", exampleKo: "경기장이 가득 찼어요.", emoji: "🏟️" },
     { word: "army", meaning: "군대", meaningEn: "a country's soldiers", example: "The army marched.", exampleKo: "군대가 행진했어요.", emoji: "🪖" },
     { word: "aroma", meaning: "향기", meaningEn: "a nice smell", example: "The aroma of coffee.", exampleKo: "커피 향기.", emoji: "☕" },
     { word: "arrest", meaning: "체포하다", meaningEn: "to catch by police", example: "Police arrested him.", exampleKo: "경찰이 그를 체포했어요.", emoji: "🚓" },
-    { word: "arrogant", meaning: "거만한", meaningEn: "thinking too highly of self", example: "Don't be arrogant.", exampleKo: "거만하게 굴지 마세요.", emoji: "😤" },
     { word: "ascend", meaning: "오르다", meaningEn: "to go up", example: "The plane ascended.", exampleKo: "비행기가 올라갔어요.", emoji: "🛫" },
     { word: "aspect", meaning: "측면", meaningEn: "a part or side", example: "Every aspect matters.", exampleKo: "모든 측면이 중요해요.", emoji: "📐" },
     { word: "assault", meaning: "공격, 폭행", meaningEn: "a violent attack", example: "The assault was prevented.", exampleKo: "공격이 막혔어요.", emoji: "🛡️" },
@@ -65,7 +62,6 @@
     { word: "beforehand", meaning: "미리", meaningEn: "before time", example: "Plan beforehand.", exampleKo: "미리 계획하세요.", emoji: "⏰" },
     { word: "behold", meaning: "보라", meaningEn: "to see (formal)", example: "Behold the sunset!", exampleKo: "일몰을 보세요!", emoji: "👁️" },
     { word: "beneath", meaning: "아래에", meaningEn: "under", example: "Treasure lies beneath.", exampleKo: "보물이 아래에 있어요.", emoji: "⬇️" },
-    { word: "bequeath", meaning: "물려주다", meaningEn: "to leave to someone", example: "Grandfather bequeathed the watch.", exampleKo: "할아버지가 시계를 물려줬어요.", emoji: "🎁" },
     { word: "beware", meaning: "주의하다", meaningEn: "to watch out", example: "Beware of dogs!", exampleKo: "개를 조심하세요!", emoji: "⚠️" },
     { word: "bias", meaning: "편견", meaningEn: "an unfair preference", example: "Show no bias.", exampleKo: "편견을 보이지 마세요.", emoji: "⚖️" },
     { word: "bid", meaning: "입찰하다", meaningEn: "to offer money for something", example: "I bid ten dollars.", exampleKo: "10달러를 입찰해요.", emoji: "💲" },
@@ -90,7 +86,6 @@
     { word: "candor", meaning: "솔직함", meaningEn: "honest speaking", example: "I value her candor.", exampleKo: "그녀의 솔직함을 가치있게 봐요.", emoji: "💯" },
     { word: "captivate", meaning: "매혹하다", meaningEn: "to grab attention", example: "The story captivated me.", exampleKo: "그 이야기가 나를 매혹시켰어요.", emoji: "🎭" },
     { word: "captive", meaning: "포로", meaningEn: "a prisoner", example: "The captive was freed.", exampleKo: "포로가 풀려났어요.", emoji: "🔓" },
-    { word: "cascade", meaning: "폭포", meaningEn: "a small waterfall", example: "The cascade was beautiful.", exampleKo: "폭포가 아름다웠어요.", emoji: "💧" },
     { word: "catastrophe", meaning: "참사", meaningEn: "a terrible disaster", example: "The earthquake was a catastrophe.", exampleKo: "지진은 참사였어요.", emoji: "💥" },
     { word: "catalyst", meaning: "촉매", meaningEn: "speeds up change", example: "She was a catalyst for change.", exampleKo: "그녀는 변화의 촉매였어요.", emoji: "⚗️" },
     { word: "caution", meaning: "주의", meaningEn: "care taken", example: "Use caution on stairs.", exampleKo: "계단에서 주의하세요.", emoji: "⚠️" },

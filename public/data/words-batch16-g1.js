@@ -1,0 +1,78 @@
+// Batch 16 — G1 추가 어휘 65개
+(function () {
+  if (typeof VOCABULARY === "undefined") return;
+  const ADD = [
+    { word: "pour", meaning: "붓다, 따르다", meaningEn: "to fill a cup by tipping a container", example: "Please pour some water into my glass.", exampleKo: "제 잔에 물을 따라 주세요.", emoji: "🥛" },
+    { word: "stir", meaning: "젓다, 휘젓다", meaningEn: "to mix by moving in circles", example: "Stir the soup before you eat.", exampleKo: "먹기 전에 수프를 저어요.", emoji: "🥄" },
+    { word: "peel", meaning: "껍질을 벗기다", meaningEn: "to remove the skin of fruit", example: "I peel the apple before eating.", exampleKo: "나는 먹기 전에 사과 껍질을 벗겨요.", emoji: "🍎" },
+    { word: "squeeze", meaning: "짜다, 쥐어짜다", meaningEn: "to press something to get liquid", example: "Squeeze the lemon over the fish.", exampleKo: "생선 위에 레몬을 짜세요.", emoji: "🍋" },
+    { word: "slice", meaning: "얇게 자르다, 조각", meaningEn: "to cut into thin pieces", example: "Mom slices the bread for us.", exampleKo: "엄마가 우리를 위해 빵을 얇게 잘라요.", emoji: "🍞" },
+    { word: "boil", meaning: "끓이다", meaningEn: "to heat water until it bubbles", example: "Boil water to make tea.", exampleKo: "차를 만들려면 물을 끓이세요.", emoji: "♨️" },
+    { word: "mix", meaning: "섞다", meaningEn: "to put things together", example: "Mix the flour and eggs well.", exampleKo: "밀가루와 달걀을 잘 섞으세요.", emoji: "🥣" },
+    { word: "taste", meaning: "맛보다, 맛", meaningEn: "to try food with your mouth", example: "Can I taste the soup?", exampleKo: "수프 맛 좀 봐도 될까요?", emoji: "😋" },
+    { word: "hop", meaning: "깡충깡충 뛰다", meaningEn: "to jump on one foot", example: "The rabbit hops in the yard.", exampleKo: "토끼가 마당에서 깡충깡충 뛰어요.", emoji: "🐇" },
+    { word: "skip", meaning: "깡충깡충 건너뛰다", meaningEn: "to jump lightly from foot to foot", example: "She skips to school every day.", exampleKo: "그녀는 매일 학교에 깡충깡충 뛰어가요.", emoji: "🏃" },
+    { word: "yawn", meaning: "하품하다", meaningEn: "to open mouth wide when tired", example: "I yawn when I feel sleepy.", exampleKo: "나는 졸릴 때 하품해요.", emoji: "🥱" },
+    { word: "sneeze", meaning: "재채기하다", meaningEn: "to push air out of your nose", example: "Cover your mouth when you sneeze.", exampleKo: "재채기할 때 입을 가리세요.", emoji: "🤧" },
+    { word: "stretch", meaning: "기지개를 켜다, 뻗다", meaningEn: "to reach out arms and legs", example: "I stretch every morning.", exampleKo: "나는 매일 아침 기지개를 켜요.", emoji: "🙆" },
+    { word: "stomp", meaning: "발을 구르다", meaningEn: "to walk with heavy steps", example: "Don't stomp on the floor.", exampleKo: "바닥을 쿵쿵 밟지 마세요.", emoji: "🦶" },
+    { word: "wave", meaning: "손을 흔들다, 파도", meaningEn: "to move your hand to say hello", example: "Wave to your friend.", exampleKo: "친구에게 손을 흔드세요.", emoji: "👋" },
+    { word: "point", meaning: "가리키다, 점", meaningEn: "to show direction with a finger", example: "He points at the map.", exampleKo: "그가 지도를 가리켜요.", emoji: "☝️" },
+    { word: "petal", meaning: "꽃잎", meaningEn: "a colorful part of a flower", example: "The petals fell from the rose.", exampleKo: "꽃잎이 장미에서 떨어졌어요.", emoji: "🌸" },
+    { word: "stem", meaning: "줄기", meaningEn: "the part of a plant that holds it up", example: "Hold the flower by its stem.", exampleKo: "꽃의 줄기를 잡으세요.", emoji: "🌿" },
+    { word: "puddle", meaning: "웅덩이", meaningEn: "a small pool of rainwater", example: "Kids jump in the puddle.", exampleKo: "아이들이 웅덩이에서 뛰어요.", emoji: "💧" },
+    { word: "shadow", meaning: "그림자", meaningEn: "dark shape made when blocking light", example: "My shadow follows me.", exampleKo: "내 그림자가 나를 따라와요.", emoji: "🌑" },
+    { word: "mud", meaning: "진흙", meaningEn: "soft wet dirt", example: "My boots are covered in mud.", exampleKo: "내 장화가 진흙으로 덮여 있어요.", emoji: "🟤" },
+    { word: "pebble", meaning: "조약돌", meaningEn: "a small smooth stone", example: "I found a round pebble.", exampleKo: "나는 둥근 조약돌을 찾았어요.", emoji: "🪨" },
+    { word: "log", meaning: "통나무", meaningEn: "a cut piece of tree trunk", example: "We sit on a log at the fire.", exampleKo: "우리는 불 옆 통나무에 앉아요.", emoji: "🪵" },
+    { word: "nest", meaning: "둥지", meaningEn: "a bird's home made of twigs", example: "A bird built a nest in the tree.", exampleKo: "새가 나무에 둥지를 지었어요.", emoji: "🐦" },
+    { word: "proud", meaning: "자랑스러운", meaningEn: "happy about what you or someone did", example: "Mom is proud of me.", exampleKo: "엄마가 나를 자랑스러워해요.", emoji: "😤" },
+    { word: "shy", meaning: "수줍은", meaningEn: "nervous around other people", example: "He is shy in class.", exampleKo: "그는 수업 시간에 수줍어해요.", emoji: "😳" },
+    { word: "relieved", meaning: "안도한", meaningEn: "glad because a worry is gone", example: "I felt relieved after the test.", exampleKo: "시험 후에 안도감을 느꼈어요.", emoji: "😌" },
+    { word: "annoyed", meaning: "짜증난", meaningEn: "slightly angry about something", example: "She felt annoyed by the noise.", exampleKo: "그녀는 소음에 짜증났어요.", emoji: "😤" },
+    { word: "nervous", meaning: "긴장된", meaningEn: "worried about something coming", example: "I feel nervous before a speech.", exampleKo: "나는 발표 전에 긴장돼요.", emoji: "😰" },
+    { word: "bored", meaning: "지루한", meaningEn: "not interested in anything", example: "I am bored on rainy days.", exampleKo: "나는 비 오는 날에 지루해요.", emoji: "😑" },
+    { word: "surprised", meaning: "놀란", meaningEn: "feeling shock at something unexpected", example: "She was surprised by the gift.", exampleKo: "그녀는 선물에 놀랐어요.", emoji: "😲" },
+    { word: "noon", meaning: "정오", meaningEn: "twelve o'clock in the middle of the day", example: "We eat lunch at noon.", exampleKo: "우리는 정오에 점심을 먹어요.", emoji: "🌞" },
+    { word: "midnight", meaning: "자정", meaningEn: "twelve o'clock at night", example: "The city is quiet at midnight.", exampleKo: "도시는 자정에 조용해요.", emoji: "🌙" },
+    { word: "yesterday", meaning: "어제", meaningEn: "the day before today", example: "I read a book yesterday.", exampleKo: "나는 어제 책을 읽었어요.", emoji: "📅" },
+    { word: "tomorrow", meaning: "내일", meaningEn: "the day after today", example: "We have a trip tomorrow.", exampleKo: "우리는 내일 여행이 있어요.", emoji: "🗓️" },
+    { word: "calendar", meaning: "달력", meaningEn: "a chart showing days and months", example: "Mark the date on the calendar.", exampleKo: "달력에 날짜를 표시하세요.", emoji: "📆" },
+    { word: "season", meaning: "계절", meaningEn: "one of four times of year", example: "Spring is my favorite season.", exampleKo: "봄은 내가 가장 좋아하는 계절이에요.", emoji: "🍂" },
+    { word: "pharmacy", meaning: "약국", meaningEn: "a store that sells medicine", example: "Buy cough medicine at the pharmacy.", exampleKo: "약국에서 기침약을 사세요.", emoji: "💊" },
+    { word: "post office", meaning: "우체국", meaningEn: "a place to send letters and packages", example: "I send a package at the post office.", exampleKo: "나는 우체국에서 소포를 보내요.", emoji: "📮" },
+    { word: "fire station", meaning: "소방서", meaningEn: "building where firefighters work", example: "The fire truck is at the fire station.", exampleKo: "소방차가 소방서에 있어요.", emoji: "🚒" },
+    { word: "police station", meaning: "경찰서", meaningEn: "a building where police officers work", example: "Go to the police station if lost.", exampleKo: "길을 잃으면 경찰서로 가세요.", emoji: "🚔" },
+    { word: "library", meaning: "도서관", meaningEn: "a place to borrow books", example: "I borrow books from the library.", exampleKo: "나는 도서관에서 책을 빌려요.", emoji: "📚" },
+    { word: "supermarket", meaning: "슈퍼마켓", meaningEn: "a large shop selling food", example: "We buy fruit at the supermarket.", exampleKo: "우리는 슈퍼마켓에서 과일을 사요.", emoji: "🛒" },
+    { word: "hospital", meaning: "병원", meaningEn: "a building where doctors help sick people", example: "She went to the hospital for her arm.", exampleKo: "그녀는 팔 때문에 병원에 갔어요.", emoji: "🏥" },
+    { word: "museum", meaning: "박물관", meaningEn: "a place to see art and history", example: "We saw dinosaurs at the museum.", exampleKo: "우리는 박물관에서 공룡을 봤어요.", emoji: "🏛️" },
+    { word: "glove", meaning: "장갑", meaningEn: "covering for the hand", example: "I wear gloves in the snow.", exampleKo: "나는 눈 속에서 장갑을 껴요.", emoji: "🧤" },
+    { word: "scarf", meaning: "목도리", meaningEn: "cloth worn around the neck", example: "She wears a warm scarf.", exampleKo: "그녀는 따뜻한 목도리를 해요.", emoji: "🧣" },
+    { word: "sock", meaning: "양말", meaningEn: "cloth covering for the foot", example: "Put on your socks before shoes.", exampleKo: "신발 전에 양말을 신으세요.", emoji: "🧦" },
+    { word: "pocket", meaning: "주머니", meaningEn: "a small bag sewn into clothing", example: "I keep coins in my pocket.", exampleKo: "나는 주머니에 동전을 넣어요.", emoji: "👖" },
+    { word: "zipper", meaning: "지퍼", meaningEn: "a sliding fastener on clothing", example: "Zip up your jacket's zipper.", exampleKo: "재킷의 지퍼를 올리세요.", emoji: "🧥" },
+    { word: "brush", meaning: "솔, 붓", meaningEn: "a tool with bristles for cleaning or painting", example: "Use a brush to paint the wall.", exampleKo: "벽을 칠하려면 붓을 사용하세요.", emoji: "🖌️" },
+    { word: "scissors", meaning: "가위", meaningEn: "a tool with two blades for cutting", example: "Cut the paper with scissors.", exampleKo: "가위로 종이를 자르세요.", emoji: "✂️" },
+    { word: "tape", meaning: "테이프", meaningEn: "sticky strip used to attach things", example: "Use tape to fix the torn page.", exampleKo: "찢어진 페이지를 고치려면 테이프를 사용하세요.", emoji: "📦" },
+    { word: "glue", meaning: "풀, 접착제", meaningEn: "sticky liquid to join things together", example: "Use glue to stick the paper.", exampleKo: "종이를 붙이려면 풀을 사용하세요.", emoji: "🖊️" },
+    { word: "ladder", meaning: "사다리", meaningEn: "steps for climbing up", example: "He climbs the ladder to fix the roof.", exampleKo: "그가 지붕을 고치려고 사다리를 올라요.", emoji: "🪜" },
+    { word: "net", meaning: "그물", meaningEn: "woven material with open holes", example: "The fish swam into the net.", exampleKo: "물고기가 그물 속으로 헤엄쳐 들어갔어요.", emoji: "🎣" },
+    { word: "rope", meaning: "밧줄", meaningEn: "thick twisted string", example: "We play jump rope at recess.", exampleKo: "우리는 쉬는 시간에 줄넘기를 해요.", emoji: "🪢" },
+    { word: "seed", meaning: "씨앗", meaningEn: "a small part of a plant that grows", example: "Plant the seed in the soil.", exampleKo: "씨앗을 흙에 심으세요.", emoji: "🌱" },
+    { word: "soil", meaning: "흙, 토양", meaningEn: "the dirt plants grow in", example: "The soil is good for flowers.", exampleKo: "흙이 꽃에 좋아요.", emoji: "🌍" },
+    { word: "wheel", meaning: "바퀴", meaningEn: "a round thing that rolls", example: "The wheel of my bike is flat.", exampleKo: "내 자전거 바퀴에 바람이 빠졌어요.", emoji: "🎡" },
+    { word: "flag", meaning: "깃발", meaningEn: "a piece of cloth representing a country", example: "We wave the flag on holidays.", exampleKo: "우리는 공휴일에 깃발을 흔들어요.", emoji: "🚩" },
+    { word: "snack", meaning: "간식", meaningEn: "a small amount of food between meals", example: "I eat a snack after school.", exampleKo: "나는 학교 후에 간식을 먹어요.", emoji: "🍿" },
+    { word: "wrap", meaning: "싸다, 포장하다", meaningEn: "to cover something with paper", example: "We wrap the birthday present.", exampleKo: "우리는 생일 선물을 포장해요.", emoji: "🎁" },
+    { word: "share", meaning: "나누다, 공유하다", meaningEn: "to give part of something to others", example: "Please share your snack with me.", exampleKo: "간식을 나눠 주세요.", emoji: "🤝" },
+    { word: "wipe", meaning: "닦다", meaningEn: "to clean by rubbing", example: "Wipe the table after dinner.", exampleKo: "저녁 후에 식탁을 닦으세요.", emoji: "🧹" }
+  ];
+  const seen = new Set(VOCABULARY.G1.map(w => w.word.toLowerCase()));
+  for (const w of ADD) {
+    if (!seen.has(w.word.toLowerCase())) {
+      VOCABULARY.G1.push(w);
+      seen.add(w.word.toLowerCase());
+    }
+  }
+})();
