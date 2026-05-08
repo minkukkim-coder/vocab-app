@@ -1,0 +1,76 @@
+// Batch 14 — G5 추가 어휘 100개
+(function () {
+  if (typeof VOCABULARY === "undefined") return;
+  const ADD = [
+    { word: "zeitgeist", meaning: "시대정신", meaningEn: "the spirit characterizing a particular era", example: "The novel captures the zeitgeist of the late twentieth century.", exampleKo: "그 소설은 20세기 후반의 시대정신을 포착해요.", emoji: "🕰️" },
+    { word: "schadenfreude", meaning: "남의불행에서느끼는기쁨", meaningEn: "pleasure from others' misfortune", example: "Social media often amplifies expressions of public schadenfreude.", exampleKo: "소셜 미디어는 종종 공적인 남의 불행에 대한 기쁨 표현을 증폭시켜요.", emoji: "😏" },
+    { word: "gemeinschaft", meaning: "공동사회, 게마인샤프트", meaningEn: "community-based social organization", example: "Tonnies contrasted gemeinschaft with rationalized modern society.", exampleKo: "퇴니에스는 공동사회를 합리화된 현대 사회와 대조했어요.", emoji: "👥" },
+    { word: "gesellschaft", meaning: "이익사회, 게젤샤프트", meaningEn: "society based on impersonal relations", example: "Modern gesellschaft replaces traditional community bonds with contractual relations.", exampleKo: "현대 이익사회는 전통적 공동체 유대를 계약적 관계로 대체해요.", emoji: "🏢" },
+    { word: "saudade", meaning: "사우다드 (포르투갈어), 그리움", meaningEn: "deep nostalgic longing", example: "Portuguese fado music expresses profound saudade.", exampleKo: "포르투갈 파두 음악은 깊은 사우다드를 표현해요.", emoji: "🎶" },
+    { word: "hygge", meaning: "휘게 (덴마크어), 아늑함", meaningEn: "Danish concept of cozy contentment", example: "Hygge culture emphasizes simple comforts and warm relationships.", exampleKo: "휘게 문화는 단순한 편안함과 따뜻한 관계를 강조해요.", emoji: "🕯️" },
+    { word: "wabi-sabi", meaning: "와비사비, 일본적미학", meaningEn: "Japanese aesthetic of imperfection", example: "Wabi-sabi finds beauty in transient and incomplete forms.", exampleKo: "와비사비는 일시적이고 불완전한 형태에서 아름다움을 찾아요.", emoji: "🍃" },
+    { word: "mono no aware", meaning: "모노노아와레, 사물의애상", meaningEn: "Japanese sensitivity to transience", example: "Mono no aware suffuses classical Japanese literary aesthetics.", exampleKo: "모노노아와레는 고전 일본 문학 미학에 스며들어요.", emoji: "🌸" },
+    { word: "ma", meaning: "마 (일본어), 사이공간", meaningEn: "Japanese aesthetic of negative space", example: "Ma transforms emptiness into meaningful aesthetic presence.", exampleKo: "마는 공간을 의미있는 미적 존재로 변형해요.", emoji: "⬜" },
+    { word: "kintsugi", meaning: "긴쓰기, 금이음", meaningEn: "Japanese art of repairing pottery with gold", example: "Kintsugi philosophy embraces imperfection as part of history.", exampleKo: "긴쓰기 철학은 불완전함을 역사의 일부로 받아들여요.", emoji: "🏺" },
+    { word: "kawaii", meaning: "카와이이, 귀여움", meaningEn: "Japanese culture of cuteness", example: "Kawaii aesthetics permeates contemporary Japanese popular culture.", exampleKo: "카와이이 미학은 현대 일본 대중 문화에 스며들어요.", emoji: "🐰" },
+    { word: "kabuki", meaning: "가부키 (일본전통극)", meaningEn: "traditional Japanese theatrical form", example: "Kabuki performances combine elaborate costume, music, and stylized movement.", exampleKo: "가부키 공연은 정교한 의상, 음악, 양식화된 동작을 결합해요.", emoji: "🎭" },
+    { word: "noh", meaning: "노가쿠, 일본전통극", meaningEn: "classical Japanese masked drama", example: "Noh theater preserves medieval Japanese performance traditions.", exampleKo: "노가쿠는 중세 일본 공연 전통을 보존해요.", emoji: "🎭" },
+    { word: "satori", meaning: "사토리, 깨달음", meaningEn: "Buddhist sudden enlightenment", example: "Zen practice cultivates conditions for spontaneous satori.", exampleKo: "선 수행은 자발적 사토리를 위한 조건을 함양해요.", emoji: "✨" },
+    { word: "samadhi", meaning: "삼매, 선정", meaningEn: "deep meditative absorption", example: "Samadhi states represent advanced contemplative achievements.", exampleKo: "삼매 상태는 고급 명상적 성취를 나타내요.", emoji: "🧘" },
+    { word: "dukkha", meaning: "고 (불교), 고통", meaningEn: "Buddhist concept of unsatisfactoriness", example: "Dukkha provides the first noble truth in Buddhist philosophy.", exampleKo: "고는 불교 철학에서 첫 번째 고귀한 진리를 제공해요.", emoji: "😢" },
+    { word: "nirvana", meaning: "열반", meaningEn: "Buddhist liberation from suffering", example: "Nirvana transcends conventional categories of existence and non-existence.", exampleKo: "열반은 존재와 비존재의 관습적 범주를 초월해요.", emoji: "🪷" },
+    { word: "samsara", meaning: "윤회, 삼사라", meaningEn: "cycle of birth, death, and rebirth", example: "Samsara constitutes the existential predicament Buddhist practice addresses.", exampleKo: "윤회는 불교 수행이 다루는 실존적 곤경을 구성해요.", emoji: "🔄" },
+    { word: "karma", meaning: "업, 카르마", meaningEn: "moral causation across lifetimes", example: "Karma represents action's enduring consequences across existence.", exampleKo: "업은 존재에 걸친 행위의 지속적 결과를 나타내요.", emoji: "⚖️" },
+    { word: "dharma", meaning: "법, 다르마", meaningEn: "cosmic moral law and teaching", example: "Dharma encompasses both natural law and religious teaching.", exampleKo: "다르마는 자연법과 종교적 가르침 모두를 포괄해요.", emoji: "📜" },
+    { word: "moksha", meaning: "해탈, 모크샤", meaningEn: "Hindu liberation from rebirth", example: "Moksha represents the ultimate spiritual goal of Hindu philosophy.", exampleKo: "모크샤는 힌두 철학의 궁극적 영적 목표를 나타내요.", emoji: "🪷" },
+    { word: "satyagraha", meaning: "사티아그라하, 진리주장", meaningEn: "non-violent resistance philosophy", example: "Satyagraha movements achieved Indian independence and inspired global parallels.", exampleKo: "사티아그라하 운동은 인도 독립을 달성하고 세계적 유사 운동에 영감을 줬어요.", emoji: "✊" },
+    { word: "swaraj", meaning: "자치, 스와라지", meaningEn: "Indian independence concept", example: "Swaraj signified both political and spiritual self-rule for Gandhi.", exampleKo: "스와라지는 간디에게 정치적 및 영적 자치 모두를 의미했어요.", emoji: "🇮🇳" },
+    { word: "ummah", meaning: "움마, 이슬람공동체", meaningEn: "the global Muslim community", example: "The concept of ummah transcends nationality in Islamic thought.", exampleKo: "움마 개념은 이슬람 사상에서 국적을 초월해요.", emoji: "🕌" },
+    { word: "shari'a", meaning: "샤리아, 이슬람법", meaningEn: "Islamic religious law", example: "Shari'a interpretation varies substantially across Islamic legal schools.", exampleKo: "샤리아 해석은 이슬람 법학파에 걸쳐 상당히 다양해요.", emoji: "📜" },
+    { word: "fatwa", meaning: "파트와, 이슬람법령", meaningEn: "Islamic legal opinion", example: "A fatwa represents authoritative religious legal interpretation.", exampleKo: "파트와는 권위있는 종교 법적 해석을 나타내요.", emoji: "📜" },
+    { word: "ijtihad", meaning: "이즈티하드, 독립적법해석", meaningEn: "independent reasoning in Islamic law", example: "Ijtihad enables Islamic law's adaptation to contemporary circumstances.", exampleKo: "이즈티하드는 이슬람 법의 현대 상황에 대한 적응을 가능하게 해요.", emoji: "💭" },
+    { word: "haram", meaning: "하람, 금지된", meaningEn: "forbidden under Islamic law", example: "Distinguishing halal from haram requires careful religious knowledge.", exampleKo: "할랄을 하람과 구별하는 것은 신중한 종교적 지식을 필요로 해요.", emoji: "🚫" },
+    { word: "torah", meaning: "토라, 모세오경", meaningEn: "Jewish scripture", example: "Torah study constitutes a central practice in Jewish life.", exampleKo: "토라 공부는 유대인 생활의 중심 실천을 구성해요.", emoji: "📜" },
+    { word: "talmud", meaning: "탈무드", meaningEn: "central Jewish text of rabbinic teaching", example: "Talmud study traditions developed sophisticated argumentative methods.", exampleKo: "탈무드 공부 전통은 정교한 논증 방법을 발전시켰어요.", emoji: "📚" },
+    { word: "midrash", meaning: "미드라쉬, 유대주석", meaningEn: "rabbinic commentary on scripture", example: "Midrash literature illustrates evolving Jewish interpretive traditions.", exampleKo: "미드라쉬 문학은 진화하는 유대 해석 전통을 보여줘요.", emoji: "📖" },
+    { word: "haggadah", meaning: "하가다 (유월절교본)", meaningEn: "Jewish text used at Passover Seder", example: "The Haggadah retells the Exodus narrative during Passover.", exampleKo: "하가다는 유월절 동안 출애굽기 이야기를 다시 들려줘요.", emoji: "📖" },
+    { word: "tikkun olam", meaning: "티쿤올람, 세상의수리", meaningEn: "Jewish concept of repairing the world", example: "Tikkun olam motivates Jewish social justice engagement.", exampleKo: "티쿤올람은 유대 사회 정의 참여를 동기부여해요.", emoji: "🌍" },
+    { word: "mitzvah", meaning: "미츠바, 계명", meaningEn: "Jewish religious commandment", example: "Performing mitzvot constitutes the heart of religious Jewish life.", exampleKo: "미츠바를 행하는 것은 종교적 유대인 생활의 중심을 구성해요.", emoji: "✡️" },
+    { word: "diaspora", meaning: "디아스포라, 이산민", meaningEn: "people dispersed from their homeland", example: "Jewish diaspora communities preserved diverse cultural traditions.", exampleKo: "유대인 디아스포라 공동체는 다양한 문화 전통을 보존했어요.", emoji: "🌍" },
+    { word: "exodus", meaning: "엑소더스, 대탈출", meaningEn: "mass departure of people", example: "The biblical Exodus narrative shapes ongoing political symbolism.", exampleKo: "성경적 엑소더스 이야기는 지속적인 정치적 상징성을 형성해요.", emoji: "🚶" },
+    { word: "pogrom", meaning: "포그롬 (조직적박해)", meaningEn: "organized massacre of an ethnic group", example: "Tsarist-era pogroms drove substantial Jewish migration to America.", exampleKo: "차르 시대 포그롬은 미국으로의 상당한 유대인 이주를 추진했어요.", emoji: "💀" },
+    { word: "shoah", meaning: "쇼아, 홀로코스트", meaningEn: "the Holocaust", example: "Shoah memorialization preserves witness against historical denial.", exampleKo: "쇼아 추모는 역사적 부정에 대한 증언을 보존해요.", emoji: "🕯️" },
+    { word: "zionism", meaning: "시오니즘", meaningEn: "movement supporting Jewish homeland", example: "Zionism's diverse intellectual currents produced varied political visions.", exampleKo: "시오니즘의 다양한 지적 흐름은 다양한 정치적 비전을 만들어냈어요.", emoji: "🇮🇱" },
+    { word: "kibbutz", meaning: "키부츠 (이스라엘공동체)", meaningEn: "Israeli collective community", example: "Early kibbutzim implemented socialist agricultural cooperatives.", exampleKo: "초기 키부츠는 사회주의 농업 협동조합을 시행했어요.", emoji: "🌾" },
+    { word: "moshav", meaning: "모샤브 (이스라엘농촌공동체)", meaningEn: "cooperative agricultural community in Israel", example: "Moshav structures combined private property with cooperative marketing.", exampleKo: "모샤브 구조는 사유 재산을 협동 마케팅과 결합했어요.", emoji: "🚜" },
+    { word: "knesset", meaning: "크네세트 (이스라엘국회)", meaningEn: "Israeli parliament", example: "Knesset coalitions reflect Israeli political fragmentation.", exampleKo: "크네세트 연합은 이스라엘의 정치적 분열을 반영해요.", emoji: "🏛️" },
+    { word: "intifada", meaning: "인티파다, 팔레스타인봉기", meaningEn: "Palestinian uprising", example: "Intifada movements challenged Israeli occupation through mass mobilization.", exampleKo: "인티파다 운동은 대중 동원을 통해 이스라엘 점령에 도전했어요.", emoji: "✊" },
+    { word: "nakba", meaning: "나크바, 팔레스타인의대재앙", meaningEn: "the 1948 Palestinian displacement", example: "Nakba commemorations preserve Palestinian historical memory.", exampleKo: "나크바 기념은 팔레스타인 역사적 기억을 보존해요.", emoji: "🕯️" },
+    { word: "fatah", meaning: "파타 (팔레스타인민족해방운동)", meaningEn: "Palestinian political movement", example: "Fatah's role evolved through decades of regional political transformation.", exampleKo: "파타의 역할은 수십 년의 지역 정치적 변환을 통해 진화했어요.", emoji: "🇵🇸" },
+    { word: "jihad", meaning: "지하드, 성전", meaningEn: "Islamic concept of religious struggle", example: "Greater jihad denotes spiritual struggle in Islamic theology.", exampleKo: "대지하드는 이슬람 신학에서 영적 투쟁을 의미해요.", emoji: "📿" },
+    { word: "mujahideen", meaning: "무자헤딘, 이슬람전사", meaningEn: "Islamic fighters in religious struggle", example: "Cold War mujahideen alliances generated complex subsequent legacies.", exampleKo: "냉전 무자헤딘 동맹은 복잡한 후속 유산을 만들어냈어요.", emoji: "⚔️" },
+    { word: "caliphate", meaning: "칼리파국, 칼리프제", meaningEn: "Islamic state led by a caliph", example: "Historical caliphates governed vast multicultural territories.", exampleKo: "역사적 칼리파국은 광대한 다문화 영토를 통치했어요.", emoji: "🕌" },
+    { word: "imam", meaning: "이맘, 이슬람지도자", meaningEn: "Islamic religious leader", example: "Imam responsibilities vary across Sunni and Shi'ite traditions.", exampleKo: "이맘 책임은 수니파와 시아파 전통에 걸쳐 다양해요.", emoji: "🕌" },
+    { word: "sunnah", meaning: "순나, 예언자의관행", meaningEn: "the practices of Prophet Muhammad", example: "Sunnah complements Quranic teaching in Islamic religious practice.", exampleKo: "순나는 이슬람 종교 실천에서 쿠란 가르침을 보완해요.", emoji: "📜" },
+    { word: "hadith", meaning: "하디스, 예언자언행록", meaningEn: "reports of Prophet Muhammad's sayings", example: "Hadith authentication developed sophisticated scholarly methods.", exampleKo: "하디스 인증은 정교한 학술 방법을 발전시켰어요.", emoji: "📜" },
+    { word: "tafsir", meaning: "타프시르, 쿠란주석", meaningEn: "Quranic exegesis and commentary", example: "Modern tafsir traditions engage contemporary intellectual contexts.", exampleKo: "현대 타프시르 전통은 현대 지적 맥락과 관여해요.", emoji: "📚" },
+    { word: "dervish", meaning: "데르비시, 수피수도자", meaningEn: "Sufi mystic", example: "Whirling dervishes practice movement-based mystical worship.", exampleKo: "회전하는 데르비시는 동작 기반 신비주의 예배를 실천해요.", emoji: "🌀" },
+    { word: "fakir", meaning: "파키르, 이슬람탁발승", meaningEn: "Muslim ascetic; mystic", example: "Fakir traditions emphasized voluntary poverty for spiritual development.", exampleKo: "파키르 전통은 영적 발전을 위한 자발적 빈곤을 강조했어요.", emoji: "🧘" },
+    { word: "guru", meaning: "구루, 영적스승", meaningEn: "spiritual teacher", example: "The guru-disciple relationship grounds many South Asian spiritual traditions.", exampleKo: "구루-제자 관계는 많은 남아시아 영적 전통의 기반이 돼요.", emoji: "🧘" },
+    { word: "zen", meaning: "선, 젠불교", meaningEn: "school of Mahayana Buddhism", example: "Zen practice emphasizes direct experience over doctrinal study.", exampleKo: "선 수행은 교리적 학습보다 직접적 경험을 강조해요.", emoji: "🪷" },
+    { word: "koan", meaning: "공안, 코안", meaningEn: "Zen paradoxical statement for meditation", example: "Koan practice cultivates non-conceptual understanding.", exampleKo: "공안 수행은 비개념적 이해를 함양해요.", emoji: "❓" },
+    { word: "zazen", meaning: "좌선, 자젠", meaningEn: "Zen seated meditation", example: "Zazen represents the central practice of Zen Buddhism.", exampleKo: "좌선은 선불교의 중심 수행을 나타내요.", emoji: "🧘" },
+    { word: "tathagata", meaning: "여래, 타타가타", meaningEn: "Buddha's title meaning thus-gone", example: "Tathagata names the Buddha's liberated nature.", exampleKo: "여래는 부처의 해탈된 본성을 명명해요.", emoji: "🪷" },
+    { word: "mantra", meaning: "만트라, 진언", meaningEn: "sacred sound or phrase", example: "Mantra recitation focuses meditative attention through repetitive sound.", exampleKo: "만트라 암송은 반복적인 소리를 통해 명상적 주의를 집중해요.", emoji: "🕉️" },
+    { word: "mandala", meaning: "만다라", meaningEn: "circular spiritual symbol", example: "Buddhist mandalas represent cosmic structure for contemplation.", exampleKo: "불교 만다라는 명상을 위한 우주 구조를 나타내요.", emoji: "⭕" },
+    { word: "mudra", meaning: "무드라, 수인", meaningEn: "ritual hand gesture", example: "Mudras express specific spiritual states in ceremonial practice.", exampleKo: "무드라는 의례적 실천에서 특정 영적 상태를 표현해요.", emoji: "🤲" },
+    { word: "pranayama", meaning: "프라나야마, 호흡법", meaningEn: "yogic breath control", example: "Pranayama practices regulate vital energy through breath.", exampleKo: "프라나야마 수행은 호흡을 통해 생명 에너지를 조절해요.", emoji: "💨" }
+  ];
+  const seen = new Set(VOCABULARY.G5.map(w => w.word.toLowerCase()));
+  for (const w of ADD) {
+    if (!seen.has(w.word.toLowerCase())) {
+      VOCABULARY.G5.push(w);
+      seen.add(w.word.toLowerCase());
+    }
+  }
+})();
