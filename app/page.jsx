@@ -17,8 +17,8 @@ const KIRBY_MAX = 30;
 const KIRBY_DEFAULT = 7;
 
 const DEFAULT_CHILDREN = [
-  { id: 'child_son', name: '아들', emoji: '👦' },
-  { id: 'child_daughter', name: '딸', emoji: '👧' },
+  { id: 'child_son', name: '지원', emoji: '👦' },
+  { id: 'child_daughter', name: '서온', emoji: '👧' },
 ];
 
 const KIRBY_SVG = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">

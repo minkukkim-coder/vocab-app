@@ -218,9 +218,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body>
-        {WORD_FILES.map((src) => (
-          <Script key={src} src={src} strategy="beforeInteractive" />
-        ))}
+        {WORD_FILES.map((src) => {
+          const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+          return <Script key={src} src={`${basePath}${src}`} strategy="beforeInteractive" />;
+        })}
         {children}
       </body>
     </html>
