@@ -17,8 +17,8 @@ const KIRBY_MAX = 30;
 const KIRBY_DEFAULT = 7;
 
 const DEFAULT_CHILDREN = [
-  { id: 'child_son', name: '지원', emoji: '👦' },
   { id: 'child_daughter', name: '서온', emoji: '👧' },
+  { id: 'child_son', name: '지원', emoji: '👦' },
 ];
 
 const KIRBY_SVG = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -152,11 +152,21 @@ export default function App() {
     if (Array.isArray(saved) && saved.length > 0) {
       // Migration: 기존 default 이름을 새 이름으로 자동 변경
       let migrated = false;
-      const updated = saved.map(c => {
+      let updated = saved.map(c => {
         if (c.id === 'child_son' && c.name === '아들') { migrated = true; return { ...c, name: '지원' }; }
         if (c.id === 'child_daughter' && c.name === '딸') { migrated = true; return { ...c, name: '서온' }; }
         return c;
       });
+      // Migration: 서온(첫째)가 지원(둘째)보다 먼저 오도록 재정렬
+      const daughterIdx = updated.findIndex(c => c.id === 'child_daughter');
+      const sonIdx = updated.findIndex(c => c.id === 'child_son');
+      if (daughterIdx >= 0 && sonIdx >= 0 && daughterIdx > sonIdx) {
+        const reordered = [...updated];
+        const [son] = reordered.splice(sonIdx, 1);
+        reordered.splice(reordered.findIndex(c => c.id === 'child_daughter') + 1, 0, son);
+        updated = reordered;
+        migrated = true;
+      }
       if (migrated) localStorage.setItem('children', JSON.stringify(updated));
       setChildren(updated);
     } else {

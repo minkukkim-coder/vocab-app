@@ -29,8 +29,8 @@ const state = {
 
 // ─── 아이(자녀) 관리 ─────────────────────────────
 const DEFAULT_CHILDREN = [
-  { id: "child_son", name: "지원", emoji: "👦" },
-  { id: "child_daughter", name: "서온", emoji: "👧" }
+  { id: "child_daughter", name: "서온", emoji: "👧" },
+  { id: "child_son", name: "지원", emoji: "👦" }
 ];
 function getChildren() {
   try {
