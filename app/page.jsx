@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { signInWithGoogle, signOut, onAuth, checkRedirectResult, loadUserData, saveUserData } from '../lib/firebase';
 
 // ─── 상수 ─────────────────────────────────────
 const PROFILES = {
@@ -110,9 +111,15 @@ function weightedPick(childId, pool, n) {
   return result;
 }
 
+// 캐릭터 옵션 (프로필 설정용)
+const EMOJI_OPTIONS = ['👧', '👦', '🧒', '👶', '🦄', '🐱', '🐶', '🐰', '🐼', '🐯', '🦁', '🐸', '🐨', '🦊', '🐻', '🐹'];
+
 // ─── 메인 컴포넌트 ─────────────────────────────
 export default function App() {
   const [vocabReady, setVocabReady] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(false);
   const [screen, setScreen] = useState('child');
   const [children, setChildren] = useState([]);
   const [child, setChild] = useState(null);
@@ -144,36 +151,103 @@ export default function App() {
     return () => clearInterval(t);
   }, []);
 
-  // 아이 목록 로드
+  // Firebase 인증 상태 감지
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    let saved;
-    try { saved = JSON.parse(localStorage.getItem('children') || 'null'); } catch {}
-    if (Array.isArray(saved) && saved.length > 0) {
-      // Migration: 기존 default 이름을 새 이름으로 자동 변경
-      let migrated = false;
-      let updated = saved.map(c => {
-        if (c.id === 'child_son' && c.name === '아들') { migrated = true; return { ...c, name: '지원' }; }
-        if (c.id === 'child_daughter' && c.name === '딸') { migrated = true; return { ...c, name: '서온' }; }
-        return c;
-      });
-      // Migration: 서온(첫째)가 지원(둘째)보다 먼저 오도록 재정렬
-      const daughterIdx = updated.findIndex(c => c.id === 'child_daughter');
-      const sonIdx = updated.findIndex(c => c.id === 'child_son');
-      if (daughterIdx >= 0 && sonIdx >= 0 && daughterIdx > sonIdx) {
-        const reordered = [...updated];
-        const [son] = reordered.splice(sonIdx, 1);
-        reordered.splice(reordered.findIndex(c => c.id === 'child_daughter') + 1, 0, son);
-        updated = reordered;
-        migrated = true;
+    // 모바일 redirect 결과 처리
+    checkRedirectResult().catch(() => {});
+    const unsub = onAuth(async (user) => {
+      setAuthReady(true);
+      setAuthUser(user);
+      if (!user) {
+        setChild(null);
+        setScreen('login');
+        return;
       }
-      if (migrated) localStorage.setItem('children', JSON.stringify(updated));
-      setChildren(updated);
-    } else {
-      setChildren(DEFAULT_CHILDREN);
-      localStorage.setItem('children', JSON.stringify(DEFAULT_CHILDREN));
-    }
+      // 로그인된 경우, Firestore에서 프로필 로드
+      try {
+        const data = await loadUserData(user.uid);
+        if (data && data.profile) {
+          // 기존 사용자 → Firestore 데이터를 localStorage에 캐시
+          const childObj = {
+            id: user.uid,
+            name: data.profile.name,
+            emoji: data.profile.emoji,
+          };
+          setChild(childObj);
+          // 학습 데이터 localStorage 동기화
+          if (data.kirbyCount !== undefined) {
+            localStorage.setItem(`kirbyCount_${user.uid}`, String(data.kirbyCount));
+          }
+          if (data.wordStats) {
+            localStorage.setItem(`wordStats_${user.uid}`, JSON.stringify(data.wordStats));
+          }
+          if (data.progress) {
+            localStorage.setItem(`vocab_progress_${user.uid}`, JSON.stringify(data.progress));
+          }
+          if (data.todayWords) {
+            Object.entries(data.todayWords).forEach(([key, val]) => {
+              localStorage.setItem(`todayWords_${user.uid}_${key}`, JSON.stringify(val));
+            });
+          }
+          if (data.customVocab) {
+            Object.entries(data.customVocab).forEach(([grade, vocab]) => {
+              localStorage.setItem(`customVocab_${grade}`, JSON.stringify(vocab));
+            });
+          }
+          setScreen('grade');
+        } else {
+          // 첫 로그인 → 프로필 설정 화면
+          setScreen('profile-setup');
+        }
+      } catch (e) {
+        console.error('Load user data error:', e);
+        setScreen('profile-setup');
+      }
+    });
+    return unsub;
   }, []);
+
+  // 데이터 변경 시 Firestore 자동 저장 (디바운스)
+  useEffect(() => {
+    if (!authUser || !child) return;
+    const syncToCloud = () => {
+      const data = {
+        profile: { name: child.name, emoji: child.emoji },
+        kirbyCount: parseInt(localStorage.getItem(`kirbyCount_${authUser.uid}`) || '0'),
+        wordStats: JSON.parse(localStorage.getItem(`wordStats_${authUser.uid}`) || '{}'),
+        progress: JSON.parse(localStorage.getItem(`vocab_progress_${authUser.uid}`) || '{}'),
+        todayWords: {},
+        customVocab: {},
+        lastSync: new Date().toISOString(),
+      };
+      // todayWords 수집
+      const prefix = `todayWords_${authUser.uid}_`;
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith(prefix)) {
+          const subKey = k.substring(prefix.length);
+          try { data.todayWords[subKey] = JSON.parse(localStorage.getItem(k)); } catch {}
+        }
+      }
+      // customVocab 수집
+      ['G1','G2','G3','G4','G5'].forEach(g => {
+        const v = localStorage.getItem(`customVocab_${g}`);
+        if (v) try { data.customVocab[g] = JSON.parse(v); } catch {}
+      });
+      saveUserData(authUser.uid, data).catch(e => console.error('Sync error:', e));
+    };
+    // 30초마다 자동 저장
+    const interval = setInterval(syncToCloud, 30000);
+    // 페이지 이탈 시 즉시 저장
+    const onUnload = () => syncToCloud();
+    window.addEventListener('beforeunload', onUnload);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('beforeunload', onUnload);
+      syncToCloud(); // 컴포넌트 unmount 시 저장
+    };
+  }, [authUser, child]);
 
   // 커비 카운터 갱신 (아이 선택 시)
   useEffect(() => {
@@ -294,9 +368,37 @@ export default function App() {
   // ─── 핸들러 ──────────────────────────────
   const goChildScreen = () => {
     speechSynthesis?.cancel();
-    setChild(null); setProfileId(null);
+    setProfileId(null);
     setIsReviewMode(false);
-    setScreen('child');
+    // 로그인된 사용자는 grade 화면으로, 아니면 login으로
+    setScreen(authUser && child ? 'grade' : 'login');
+  };
+  const handleSignIn = async () => {
+    setAuthLoading(true);
+    try {
+      await signInWithGoogle();
+    } catch (e) {
+      console.error('Sign-in error:', e);
+      alert('로그인 실패: ' + (e?.message || e));
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+  const handleSignOut = async () => {
+    if (!confirm('로그아웃 하시겠어요?')) return;
+    speechSynthesis?.cancel();
+    try {
+      await signOut();
+    } catch (e) {
+      console.error('Sign-out error:', e);
+    }
+  };
+  const completeProfileSetup = async (name, emoji) => {
+    if (!authUser) return;
+    const childObj = { id: authUser.uid, name: name.trim() || '학생', emoji };
+    setChild(childObj);
+    await saveUserData(authUser.uid, { profile: { name: childObj.name, emoji: childObj.emoji } });
+    setScreen('grade');
   };
   const goHomeScreen = () => {
     speechSynthesis?.cancel();
@@ -488,16 +590,17 @@ export default function App() {
       )}
 
       <div id="app">
-        {screen === 'child' && (
-          <ChildScreen
-            children={children}
-            onSelect={selectChild}
-            onAdd={addChildPrompt}
-            onManage={manageChildrenPrompt}
+        {(screen === 'child' || screen === 'login') && (
+          <LoginScreen onSignIn={handleSignIn} loading={authLoading} authReady={authReady} />
+        )}
+        {screen === 'profile-setup' && authUser && (
+          <ProfileSetupScreen
+            defaultName={authUser.displayName || ''}
+            onComplete={completeProfileSetup}
           />
         )}
         {screen === 'grade' && child && (
-          <GradeScreen child={child} onBack={goChildScreen} onSelect={selectGrade} />
+          <GradeScreen child={child} onBack={handleSignOut} onSelect={selectGrade} backLabel="↩" />
         )}
         {screen === 'home' && profile && child && (
           <HomeScreen
@@ -605,11 +708,98 @@ function ChildScreen({ children, onSelect, onAdd, onManage }) {
   );
 }
 
-function GradeScreen({ child, onBack, onSelect }) {
+function LoginScreen({ onSignIn, loading, authReady }) {
+  if (!authReady) {
+    return (
+      <section className="screen active screen-child">
+        <h1>🔐 로그인 확인 중...</h1>
+      </section>
+    );
+  }
+  return (
+    <section className="screen active screen-child">
+      <h1 style={{ marginBottom: 12 }}>📚 우리 가족 영단어</h1>
+      <p style={{ textAlign: 'center', color: 'white', fontSize: 18, marginBottom: 28, opacity: 0.9 }}>
+        Google 계정으로 로그인하면<br />어디서든 학습 기록이 이어져요
+      </p>
+      <button
+        className="add-child-btn"
+        onClick={onSignIn}
+        disabled={loading}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, fontSize: 18, padding: '16px 24px' }}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" style={{ background: 'white', borderRadius: 4, padding: 2 }}>
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        {loading ? '로그인 중...' : 'Google로 로그인'}
+      </button>
+      <p style={{ textAlign: 'center', color: 'white', fontSize: 13, marginTop: 24, opacity: 0.7 }}>
+        Family Link 자녀계정도 사용 가능해요<br />
+        (부모님 승인이 필요할 수 있어요)
+      </p>
+    </section>
+  );
+}
+
+function ProfileSetupScreen({ defaultName, onComplete }) {
+  const [name, setName] = useState(defaultName || '');
+  const [emoji, setEmoji] = useState('👧');
+  return (
+    <section className="screen active screen-child">
+      <h1 style={{ marginBottom: 16 }}>🎉 환영해요!</h1>
+      <p style={{ textAlign: 'center', color: 'white', fontSize: 18, marginBottom: 24, opacity: 0.9 }}>
+        프로필을 설정해 주세요
+      </p>
+      <div style={{ background: 'rgba(255,255,255,0.95)', borderRadius: 16, padding: 20, marginBottom: 16 }}>
+        <label style={{ display: 'block', fontWeight: 600, marginBottom: 8 }}>이름</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="이름을 입력하세요"
+          style={{ width: '100%', padding: 12, fontSize: 16, borderRadius: 8, border: '2px solid #ddd', boxSizing: 'border-box' }}
+          autoFocus
+        />
+        <label style={{ display: 'block', fontWeight: 600, marginTop: 16, marginBottom: 8 }}>캐릭터</label>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 6 }}>
+          {EMOJI_OPTIONS.map((em) => (
+            <button
+              key={em}
+              onClick={() => setEmoji(em)}
+              style={{
+                fontSize: 28,
+                padding: 8,
+                border: emoji === em ? '3px solid #ff6b9d' : '2px solid transparent',
+                background: emoji === em ? '#ffe0ec' : '#f5f5f5',
+                borderRadius: 8,
+                cursor: 'pointer',
+              }}
+            >
+              {em}
+            </button>
+          ))}
+        </div>
+      </div>
+      <button
+        className="add-child-btn"
+        onClick={() => onComplete(name, emoji)}
+        disabled={!name.trim()}
+        style={{ fontSize: 18, padding: '14px 24px' }}
+      >
+        시작하기 ▶
+      </button>
+    </section>
+  );
+}
+
+function GradeScreen({ child, onBack, onSelect, backLabel }) {
   return (
     <section className="screen active screen-profile">
       <header className="topbar">
-        <button className="back-btn" onClick={onBack}>←</button>
+        <button className="back-btn" onClick={onBack} title="로그아웃">{backLabel || '←'}</button>
         <div className="title">{child.emoji} {child.name}</div>
       </header>
       <h1 style={{ textAlign: 'center', marginBottom: 18 }}>어떤 학년을 공부할까요?</h1>
