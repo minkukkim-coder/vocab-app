@@ -400,6 +400,13 @@ export default function App() {
     await saveUserData(authUser.uid, { profile: { name: childObj.name, emoji: childObj.emoji } });
     setScreen('grade');
   };
+  const changeEmoji = async (newEmoji) => {
+    const updated = { ...child, emoji: newEmoji };
+    setChild(updated);
+    if (authUser) {
+      await saveUserData(authUser.uid, { profile: { name: updated.name, emoji: updated.emoji } });
+    }
+  };
   const goHomeScreen = () => {
     speechSynthesis?.cancel();
     setIsReviewMode(false);
@@ -600,7 +607,7 @@ export default function App() {
           />
         )}
         {screen === 'grade' && child && (
-          <GradeScreen child={child} onBack={handleSignOut} onSelect={selectGrade} backLabel="↩" />
+          <GradeScreen child={child} onBack={handleSignOut} onSelect={selectGrade} backLabel="↩" onChangeEmoji={changeEmoji} />
         )}
         {screen === 'home' && profile && child && (
           <HomeScreen
@@ -795,13 +802,47 @@ function ProfileSetupScreen({ defaultName, onComplete }) {
   );
 }
 
-function GradeScreen({ child, onBack, onSelect, backLabel }) {
+function GradeScreen({ child, onBack, onSelect, backLabel, onChangeEmoji }) {
+  const [showPicker, setShowPicker] = useState(false);
   return (
     <section className="screen active screen-profile">
       <header className="topbar">
         <button className="back-btn" onClick={onBack} title="로그아웃">{backLabel || '←'}</button>
-        <div className="title">{child.emoji} {child.name}</div>
+        <div className="title">
+          <button
+            onClick={() => setShowPicker(v => !v)}
+            title="아이콘 변경"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', padding: '0 2px', lineHeight: 1 }}
+          >
+            {child.emoji}
+          </button>
+          {' '}{child.name}
+        </div>
       </header>
+      {showPicker && (
+        <div style={{
+          background: 'rgba(255,255,255,0.97)', borderRadius: 16, padding: 16, margin: '0 0 12px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+        }}>
+          <p style={{ margin: '0 0 10px', fontWeight: 600, fontSize: 14, color: '#555' }}>아이콘을 선택하세요</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 6 }}>
+            {EMOJI_OPTIONS.map(em => (
+              <button
+                key={em}
+                onClick={() => { onChangeEmoji(em); setShowPicker(false); }}
+                style={{
+                  fontSize: 28, padding: 6,
+                  border: child.emoji === em ? '3px solid #ff6b9d' : '2px solid transparent',
+                  background: child.emoji === em ? '#ffe0ec' : '#f5f5f5',
+                  borderRadius: 8, cursor: 'pointer',
+                }}
+              >
+                {em}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <h1 style={{ textAlign: 'center', marginBottom: 18 }}>어떤 학년을 공부할까요?</h1>
       <div className="profile-buttons grade-grid">
         {Object.entries(PROFILES).map(([id, p]) => (
