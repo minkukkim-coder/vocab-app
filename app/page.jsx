@@ -1031,7 +1031,8 @@ function TestScreen({ question, idx, total, isReviewMode, kirbyCount, onBack, on
           </>
         )}
         {question.type === 'fill-blank' && (() => {
-          const re = new RegExp(`\\b${question.word.word}\\b`, 'gi');
+          const escaped = question.word.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const re = new RegExp(`\\b${escaped}\\b`, 'gi');
           const blanked = question.word.example.replace(re, '______');
           return (
             <>
