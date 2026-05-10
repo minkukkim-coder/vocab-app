@@ -74,6 +74,12 @@ const KIRBY_POSITIONS = [
 
 // ─── 순수 함수 ────────────────────────────────
 function todayKey() { return new Date().toISOString().slice(0, 10); }
+function wordInExample(word, example) {
+  if (!example || example.length < 5) return false;
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const yIes = /[^aeiou]y$/i.test(word) ? ('|\\b' + escaped.slice(0, -1) + 'ies\\b') : '';
+  return new RegExp('\\b' + escaped + '\\w*' + yIes, 'gi').test(example);
+}
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -456,11 +462,13 @@ export default function App() {
   }, [profile]);
 
   const startTest = () => {
-    const qs = activeWords.map((w, i) => ({
-      word: w,
-      type: TYPES[i % TYPES.length],
-      distractors: pickDistractors(w, 3),
-    }));
+    const qs = activeWords.map((w, i) => {
+      let type = TYPES[i % TYPES.length];
+      if (type === 'fill-blank' && !wordInExample(w.word, w.example)) {
+        type = 'mc-meaning';
+      }
+      return { word: w, type, distractors: pickDistractors(w, 3) };
+    });
     setTestQuestions(shuffle(qs));
     setTestIdx(0);
     setTestScore(0);
