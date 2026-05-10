@@ -1032,7 +1032,11 @@ function TestScreen({ question, idx, total, isReviewMode, kirbyCount, onBack, on
         )}
         {question.type === 'fill-blank' && (() => {
           const escaped = question.word.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const re = new RegExp(`\\b${escaped}\\w*`, 'gi');
+          // y→ies 불규칙 복수형 처리 (cherry→cherries, ally→allies)
+          const yIes = /[^aeiou]y$/i.test(question.word.word)
+            ? `|\\b${escaped.slice(0, -1)}ies\\b`
+            : '';
+          const re = new RegExp(`\\b${escaped}\\w*${yIes}`, 'gi');
           const blanked = question.word.example.replace(re, '______');
           return (
             <>
