@@ -332,10 +332,11 @@ export default function App() {
     ));
 
   // ─── 오늘의 단어 캐시/계산 ───────────────
-  const computeTodayWords = useCallback((p, ch) => {
+  const computeTodayWords = useCallback((p, ch, gid) => {
     if (!ch) return [];
     const today = todayKey();
-    const cacheKey = `todayWords_${ch.id}_${profileId}_${today}`;
+    const resolvedId = gid ?? profileId;
+    const cacheKey = `todayWords_${ch.id}_${resolvedId}_${today}`;
     const currentPool = getGradeWords(p.currentGrade);
     const nextPool = p.nextGrade ? getGradeWords(p.nextGrade) : [];
     const allWords = [...currentPool, ...nextPool];
@@ -424,7 +425,7 @@ export default function App() {
   const selectGrade = (gid) => {
     setProfileId(gid);
     const p = PROFILES[gid];
-    const words = computeTodayWords(p, child);
+    const words = computeTodayWords(p, child, gid);
     setTodayWordsFull(words);
     setActiveWords(words);
     setIsReviewMode(false);
