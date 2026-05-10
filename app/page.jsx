@@ -148,6 +148,7 @@ export default function App() {
   const confettiRef = useRef(null);
   const playingBtnRef = useRef(null);
   const speakQueueRef = useRef([]);
+  const speakGenRef = useRef(0);
 
   // 단어 데이터 로드 대기
   useEffect(() => {
@@ -269,7 +270,9 @@ export default function App() {
     speakQueueRef.current = [...items];
     playingBtnRef.current = btnId;
     setKirbyPulse(true); // dummy state to trigger render
+    const gen = ++speakGenRef.current;
     const playNext = () => {
+      if (speakGenRef.current !== gen) return; // 이전 세션의 stale 콜백 무시
       if (speakQueueRef.current.length === 0) {
         playingBtnRef.current = null;
         document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
@@ -538,10 +541,14 @@ export default function App() {
   }, [learnIdx, screen, learnWord, speakSeq]);
 
   const nextLearn = () => {
+    speechSynthesis?.cancel();
     if (learnIdx === activeWords.length - 1) { startTest(); return; }
     setLearnIdx(i => i + 1);
   };
-  const prevLearn = () => { if (learnIdx > 0) setLearnIdx(i => i - 1); };
+  const prevLearn = () => {
+    speechSynthesis?.cancel();
+    if (learnIdx > 0) setLearnIdx(i => i - 1);
+  };
 
   // ─── 아이 추가/관리 ─────────────────────
   const addChildPrompt = () => {
