@@ -1,8 +1,11 @@
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.DATABASE_URL);
+function getSQL() {
+  return neon(process.env.DATABASE_URL);
+}
 
 export async function GET(request) {
+  const sql = getSQL();
   const { searchParams } = new URL(request.url);
   const uid = searchParams.get('uid');
   if (!uid) return Response.json({ error: 'uid required' }, { status: 400 });
@@ -22,6 +25,7 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+  const sql = getSQL();
   const body = await request.json();
   const { uid, ...data } = body;
   if (!uid) return Response.json({ error: 'uid required' }, { status: 400 });
