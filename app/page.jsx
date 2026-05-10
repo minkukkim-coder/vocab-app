@@ -862,6 +862,7 @@ function HomeScreen({ child, profile, onBack, onLearn, onTest, onStats, onImport
   const titleText = profile.nextGrade
     ? `${child.emoji} ${child.name} · ${profile.currentGrade} → ${profile.nextGrade}`
     : `${child.emoji} ${child.name} · ${profile.currentGrade}`;
+  const learnSub = profile.nextGrade ? '20단어 (10 복습 + 10 예습)' : '20단어 집중 학습';
   return (
     <section className="screen active">
       <header className="topbar">
@@ -872,7 +873,7 @@ function HomeScreen({ child, profile, onBack, onLearn, onTest, onStats, onImport
         <button className="menu-btn" onClick={onLearn}>
           <div className="emoji-big">📚</div>
           <div>오늘의 단어 배우기</div>
-          <div className="sub">20단어 (10 복습 + 10 예습)</div>
+          <div className="sub">{learnSub}</div>
         </button>
         <button className="menu-btn" onClick={onTest}>
           <div className="emoji-big">✏️</div>
