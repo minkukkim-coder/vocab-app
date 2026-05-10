@@ -935,7 +935,7 @@ function LearnScreen({ word, idx, total, isReviewMode, kirbyCount, renderLetters
 
 function TestScreen({ question, idx, total, isReviewMode, kirbyCount, onBack, onAnswer, speakOne }) {
   const [answered, setAnswered] = useState(false);
-  const [pickedCorrect, setPickedCorrect] = useState(null);
+  const [pickedWord, setPickedWord] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [spellInput, setSpellInput] = useState('');
   const [choicesShuffled, setChoicesShuffled] = useState([]);
@@ -943,7 +943,7 @@ function TestScreen({ question, idx, total, isReviewMode, kirbyCount, onBack, on
 
   useEffect(() => {
     setAnswered(false);
-    setPickedCorrect(null);
+    setPickedWord(null);
     setFeedback(null);
     setSpellInput('');
     setChoicesShuffled(shuffle([question.word, ...question.distractors]));
@@ -961,7 +961,7 @@ function TestScreen({ question, idx, total, isReviewMode, kirbyCount, onBack, on
     if (answered) return;
     const correct = choice.word === question.word.word;
     setAnswered(true);
-    setPickedCorrect(correct ? choice.word : null);
+    setPickedWord(choice.word);
     setFeedback(correct
       ? `✅ 정답! ${question.word.word} = ${question.word.meaning}`
       : `❌ 정답: ${question.word.word} = ${question.word.meaning}`);
@@ -983,10 +983,7 @@ function TestScreen({ question, idx, total, isReviewMode, kirbyCount, onBack, on
   const choiceClass = (choice) => {
     if (!answered) return 'choice-btn';
     if (choice.word === question.word.word) return 'choice-btn correct';
-    if (pickedCorrect === null && choice.word !== question.word.word) {
-      // 사용자가 이걸 골랐는지 모름. 일단 wrong 표시는 하지 않음
-      return 'choice-btn';
-    }
+    if (choice.word === pickedWord) return 'choice-btn wrong';
     return 'choice-btn';
   };
 
